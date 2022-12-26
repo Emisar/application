@@ -47,7 +47,7 @@ class SearchController {
         if (result.size() == 0) {
             redirect(action: "index", params: [fromSearch: true])
         } else {
-            redirect(action: "pagination", params: [offset: 0, max: 2, hotelsId: result*.id, totalResults: result.size()])
+            redirect(action: "pagination", params: [offset: 0, max: 10, hotelsId: result*.id, totalResults: result.size()])
         }
     }
 }

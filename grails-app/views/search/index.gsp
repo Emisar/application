@@ -48,7 +48,7 @@
                             <g:render template="resultRowTemplate" collection="${searchResult.hotels}" var="hotel"/>
                         </div>
                         <div class="pagination_box">
-                            <g:paginate action="pagination" max="2" total="${pagination.totalResults}" offset="pagination.offset"
+                            <g:paginate action="pagination" max="10" total="${pagination.totalResults}" offset="pagination.offset"
                                         params="[hotelsId: pagination.totalHotelsId, totalResults: pagination.totalResults]"/>
                         </div>
                     </div>

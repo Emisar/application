@@ -1,0 +1,62 @@
+.edit_box {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+
+    padding: 10px 0;
+    background-color: lightgray;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.edit_box__class_field {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: row nowrap;
+    align-items: baseline;
+}
+
+.edit_box__class_field__field_name {
+    font-size: 20px;
+    text-align: center; 
+    line-height: 1.5em; 
+    padding-bottom: 45px; 
+    font-family: "Playfair Display", serif; 
+    text-transform: uppercase;
+    letter-spacing: 2px; 
+    color: #111;
+
+    width: 10rem;   
+    padding: 12px 24px;
+}
+
+.edit_box__class_field__input_field, .edit_box__class_field__input_number_field {
+    padding: 10px 10px;
+    margin: 0 24px;
+    font-family: "Playfair Display", serif; 
+    font-size: 20px;
+    font-weight: 500;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid black;
+    color: #223254;
+    width: 15rem;
+}
+
+.edit_box__class_field__select {
+    padding: 0px 10px;
+    margin: 0 24px;
+    font-family: "Playfair Display", serif; 
+    font-size: 20px;
+    font-weight: 500;
+    width: 180px;
+    border: 0;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background: none;
+}
+
+.edit_box__class_field__select option:checked {
+    background: #b0b0b0;
+}

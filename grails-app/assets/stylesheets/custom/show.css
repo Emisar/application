@@ -1,0 +1,58 @@
+.show_box {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+
+    padding: 10px 0;
+    background-color: lightgray;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.show_box__class_field {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: row nowrap;
+    align-items: baseline;
+}
+
+.show_box__class_field__field_name, .show_box__class_field__field_value {
+    font-size: 20px;
+    text-align: center; 
+    line-height: 1.5em; 
+    padding-bottom: 45px; 
+    font-family: "Playfair Display", serif; 
+    text-transform: uppercase;
+    letter-spacing: 2px; 
+    color: #111;
+
+    width: 15rem;   
+    padding: 12px 24px;
+}
+
+.show_box__class_field__field_value {
+    text-align: start;
+    width: 20rem;
+}
+
+.show_box__class_field__field_multi_value {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    width: 15rem;
+    padding: 12px 24px;
+}
+
+.show_box__class_field__field_multi_value__label {
+    font-size: 20px;
+    text-align: start; 
+    line-height: 1.5em; 
+    font-family: "Playfair Display", serif; 
+    text-transform: uppercase;
+    letter-spacing: 2px; 
+    color: #111;
+    width: 15rem;
+    padding-bottom: 5px;
+}

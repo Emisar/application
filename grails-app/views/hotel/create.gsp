@@ -22,18 +22,21 @@
         <div class="page_content">
             <label class="page_content__title">Добавить отель</label>
             <g:form controller="hotel">
+                <g:hasErrors bean="${hotel}">
+                    <g:eachError><p><g:message code="${errorCode}"/></p></g:eachError>
+                </g:hasErrors>
                 <div class="create_box">
-                    <div class="create_box__class_field">
+                    <div class="create_box__class_field ${hasErrors(bean:hotel, field:'hotel.name', 'errors')}">
                         <label class="create_box__class_field__field_name">Name: </label>
-                        <g:textField class="create_box__class_field__input_field" name="name"/>
+                        <g:field class="create_box__class_field__input_field" type="text" required="" maxlength="255" name="name"/>
                     </div>
-                    <div class="create_box__class_field">
+                    <div class="create_box__class_field ${hasErrors(bean:hotel, field:'hotel.stars', 'errors')}">
                         <label class="create_box__class_field__field_name">Stars: </label>
-                        <g:field class="create_box__class_field__input_number_field" type="number" min="1" max="5" name="stars"/>
+                        <g:field class="create_box__class_field__input_number_field" type="number" min="1" max="5" required="" name="stars"/>
                     </div>
-                    <div class="create_box__class_field">
+                    <div class="create_box__class_field ${hasErrors(bean:hotel, field:'hotel.link', 'errors')}">
                         <label class="create_box__class_field__field_name">Link: </label>
-                        <g:field class="create_box__class_field__input_field" type="url" name="link" value=""/>
+                        <g:field class="create_box__class_field__input_field" type="text" pattern="^(http:\\/\\/|https:\\/\\/).*" name="link"/>
                     </div>
                 </div>
                 <div class="bottom_menu">

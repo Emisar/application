@@ -20,7 +20,7 @@ class BootStrap {
         def twoStarHotel = new Hotel(name: "Lighthouse", stars: 2)
         def threeStarHotel = new Hotel(name: "Drifting Hotel", stars: 3)
         def fourStarHotel = new Hotel(name: "Rivera", stars: 4, link: "https://rivera.com")
-        def fiveStarHotel = new Hotel(name: "Laguna Hotel", stars: 5, link: "hhhtp:/joke.com")
+        def fiveStarHotel = new Hotel(name: "Laguna Hotel", stars: 5, link: "http://joke.com")
         return ["one": oneStarHotel,
                 "two": twoStarHotel,
                 "three": threeStarHotel,

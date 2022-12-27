@@ -7,8 +7,8 @@ class Country {
     static hasMany = [hotels: CountryHotel]
 
     static constraints = {
-        name nullable: false, blank: false, unique: true, size: 1..255
-        capital nullable: false, blank: false, size: 1..128
+        name blank: false, unique: true, size: 1..255
+        capital blank: false, size: 1..128
     }
 
     String toString() {

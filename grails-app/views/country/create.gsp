@@ -22,14 +22,17 @@
         <div class="page_content">
             <label class="page_content__title">Добавить страну</label>
             <g:form controller="country">
+                <g:hasErrors bean="${country}">
+                    <g:eachError><p><g:message code="${errorCode}"/></p></g:eachError>
+                </g:hasErrors>
                 <div class="create_box">
-                    <div class="create_box__class_field">
+                    <div class="create_box__class_field ${hasErrors(bean:country, field:'country.name', 'errors')}">
                         <label class="create_box__class_field__field_name">Name: </label>
-                        <g:textField class="create_box__class_field__input_field" name="name"/>
+                        <g:field class="create_box__class_field__input_field" type="text" required="" maxlength="255" name="name"/>
                     </div>
-                    <div class="create_box__class_field">
+                    <div class="create_box__class_field ${hasErrors(bean:country, field:'country.capital', 'errors')}">
                         <label class="create_box__class_field__field_name">Capital: </label>
-                        <g:textField class="create_box__class_field__input_field" name="capital"/>
+                        <g:field class="create_box__class_field__input_field" type="text" required="" maxlength="128" name="capital"/>
                     </div>
                     <div class="create_box__class_field">
                         <label class="create_box__class_field__field_name">Hotels: </label>

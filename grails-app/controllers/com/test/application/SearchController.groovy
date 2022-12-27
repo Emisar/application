@@ -1,53 +1,100 @@
 package com.test.application
 
 class SearchController {
+    private static final int START_OFFSET = 0
+    private static final int DEFAULT_MAX = 2
+    private static final String INDEX_VIEW_NAME = "index"
 
     def index() {
-        def result = [countries: Country.list(sort: "name", order: "asc")]
-        if (params != null) {
-            if (params.fromSearch) {
-                result.emptySearchResult = true
-            }
-            if (params.pageHotelsId && params.offset && params.totalHotelsId && params.totalResults) {
-                result.emptySearchResult = false
-                def hotels = []
-                params.pageHotelsId.each { hotels.add(Hotel.get(it)) }
-                result.searchResult = [hotels: hotels]
-                result.pagination = [offset: params.offset, totalHotelsId: params.totalHotelsId, totalResults: params.totalResults]
-            }
-        }
-
-        return result
-    }
-
-    def pagination() {
-        def hotelsId = params.hotelsId as List
-        def offset = params.offset as Integer
-        def max = params.max as Integer
-        def totalResults = params.totalResults as Integer
-
-        def startFrom = offset
-        def end = Math.min(startFrom + max, hotelsId.size())
-        def result = hotelsId.subList(startFrom, end)
-
-        redirect(action: "index", params: [pageHotelsId: result, offset: offset, totalHotelsId: hotelsId, totalResults: totalResults])
+        return [
+                model: [
+                        searchField: [
+                                countries: Country.list(sort: "name", order: "asc")
+                        ]
+                ]
+        ]
     }
 
     def search() {
-        def countryId = params.country as Integer
-        def searchString = params.search
-        def result = Hotel.list(sort: "stars", order: "desc")
-        if (countryId != -1) {
-            def country = Country.get(countryId)
-            result = result.findAll { it.countries.find { it.country == country } != null }
+        int offset = params.offset as Integer ?: START_OFFSET
+        int max = params.max as Integer ?: DEFAULT_MAX
+        Long countryId = params.countryId as Long
+        String searchString = params.searchString
+
+        LinkedHashMap<String, Object> searchResult = searchHotelsByParams(offset, max, countryId, searchString)
+
+        List<Hotel> hotels = searchResult.result
+        int totalCount = searchResult.totalCount
+
+        render(view: INDEX_VIEW_NAME, model: createModel(countryId, searchString, hotels, totalCount, offset, max))
+    }
+
+    private searchHotelsByParams(int offset, int max, Long countryId, String searchString) {
+        int totalCount = Hotel.createCriteria().get() {
+            projections {
+                countDistinct("id")
+            }
+            createAlias("countries", "ch")
+            createAlias("ch.country", "c")
+
+            if (countryId != -1L) {
+                like("c.id", countryId)
+            }
+            rlike("name", ".*${searchString}.*")
         }
-        if (searchString != "") {
-            result = result.findAll { it.name.toLowerCase().indexOf(searchString.toLowerCase()) != -1 }
+        List<Object[]> resultListObjects = Hotel.createCriteria().list() {
+            projections {
+                distinct("id")
+                property("stars")
+                property("name")
+                property("ch.hotel")
+            }
+            firstResult(offset)
+            maxResults(max)
+            createAlias("countries", "ch")
+            createAlias("ch.country", "c")
+
+            if (countryId != -1L) {
+                like("c.id", countryId)
+            }
+            rlike("name", ".*${searchString}.*")
+            and {
+                order("stars", "desc")
+                order("name", "asc")
+            }
         }
-        if (result.size() == 0) {
-            redirect(action: "index", params: [fromSearch: true])
-        } else {
-            redirect(action: "pagination", params: [offset: 0, max: 10, hotelsId: result*.id, totalResults: result.size()])
-        }
+        List<Hotel> resultList = parseResultListToHotelList(resultListObjects)
+        return [result: resultList, totalCount: totalCount]
+    }
+
+    private static List<Hotel> parseResultListToHotelList(List<Object[]> resultList) {
+        List<Hotel> hotels = []
+        resultList.each { arr -> hotels.add(arr[3] as Hotel) }
+        return hotels
+    }
+
+    private static createModel(long countryId, String searchString, List<Hotel> hotels, int totalCount, int offset, int max) {
+        return [
+                model      : [
+                        searchField: [
+                                countries   : Country.list(sort: "name", order: "asc"),
+                                countryId   : countryId,
+                                searchString: searchString
+                        ],
+                        resultField: [
+                                hotels    : hotels,
+                                totalCount: totalCount
+                        ]
+                ],
+                searchParam: [
+                        countryId   : countryId,
+                        searchString: searchString
+                ],
+                pagination : [
+                        offset    : offset,
+                        max       : max,
+                        totalCount: totalCount
+                ]
+        ]
     }
 }
